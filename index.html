@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/app.css" />
+    <title>SweeperProblem</title>
+</head>
+
+<body>
+    <div id="wrapper">
+        <p id="game-title">Problema del Barrendero</p>
+        <div id="size-bar">
+            <input type="range" id="game-size" min="2" max="10" onchange="resizeField()"></input>
+            <label for="game-size">Tamaño</label>
+        </div>
+        <div id="field">
+            <div id="game-container">
+                <div id="game-dialog"></div>
+                <button id="game-reset">Try again</button> </div>
+            <!-- JS will automatically insert nodes -->
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+
+</html>
