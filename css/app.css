@@ -90,3 +90,8 @@ body {
     color: rgb(121, 121, 121);
     user-select: none;
 }
+
+#instructions {
+    text-align: center;
+    font-weight: 800;
+}

@@ -257,7 +257,7 @@ function format(f) {
         return 0;
     const str = String(f);
     const idx = str.indexOf('.');
-    return str.slice(0, idx+3);
+    return str.slice(0, idx + 3);
 }
 
 function drawCells() {
@@ -269,8 +269,11 @@ function drawCells() {
             const rgb = viridis(FIELD[i][j][1]);
             const rgbl = viridis(1.0 - FIELD[i][j][1]);
             const alpha = FIELD[i][j][0] ? 0.90 : 0.5;
-            cell.style.background= `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${alpha})`;
-            cell.style.color= `rgb(${rgbl[0]}, ${rgbl[1]}, ${rgbl[2]})`;
+            cell.style.background = `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${alpha})`;
+            if (Math.abs(1.0 - 2 * FIELD[i][j][1]) < 0.2)
+                cell.style.color = `rgb(230, 230, 0)`;
+            else
+                cell.style.color = `rgb(${rgbl[0]}, ${rgbl[1]}, ${rgbl[2]})`;
         }
     }
 }
