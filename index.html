@@ -5,20 +5,28 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="css/app.css" />
-    <title>SweeperProblem</title>
+    <title>Problema del Barrendero</title>
 </head>
 
 <body>
     <div id="wrapper">
         <p id="game-title">Problema del Barrendero</p>
-        <div id="size-bar">
-            <input type="range" id="game-size" min="2" max="10" onchange="resizeField()"></input>
-            <label for="game-size">Tamaño</label>
+        <div>
+            <div id="size-bar">
+                <input type="range" id="game-size" min="4" max="8"></input>
+                <label for="game-size">Tamaño</label>
+            </div>
+            <div id="reset-button">
+                <button id="reset" class="button" type="button">Borrar</button>
+            </div>
+            <div id="reboot-button">
+                <button id="reboot" class="button" type="button">Reiniciar</button>
+            </div>
+            <div id="random-click">
+                <button id="random" class="button" type="button">Aleatorio</button>
+            </div>
         </div>
         <div id="field">
-            <div id="game-container">
-                <div id="game-dialog"></div>
-                <button id="game-reset">Try again</button> </div>
             <!-- JS will automatically insert nodes -->
         </div>
     </div>

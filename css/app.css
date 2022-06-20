@@ -1,118 +1,92 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&display=swap");
 
 * {
-	font-family: "Montserrat", sans-serif;
-	margin: 0;
-	padding: 0;
+    font-family: "Montserrat", sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-	background: #faf8ef;
-	color: #776e65;
+    background: #faf8ef;
+    color: #776e65;
 }
 
 #wrapper {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100vh;
 }
 
 #game-title {
-	font-size: 4em;
-	text-align: center;
-	font-weight: 800;
+    font-size: 4em;
+    text-align: center;
+    font-weight: 800;
 }
 
 #size-bar {
-	font-size: 2em;
-	text-align: center;
-	font-weight: 800;
+    font-size: 2em;
+    text-align: center;
+    font-weight: 800;
 }
 
-#game-reset {
-	position: absolute;
-	bottom: 180px;
-	left: 0;
-	right: 0;
-	margin: 0 auto;
-	display: none;
-	padding: 10px 15px;
-	border-radius: 6px;
-	color: #fff;
-	background: #8f7a66;
-	cursor: pointer;
-	border: none;
-	font-size: 0.2em;
-	outline: none;
+#reset-button {
+    text-align: center;
+    font-weight: 800;
 }
 
-#game-reset:hover {
-	background: #7e6a57;
+#reboot-button {
+    text-align: center;
+    font-weight: 800;
+}
+
+#random-click {
+    text-align: center;
+    font-weight: 800;
+}
+
+.button {
+    background: #faf8ef;
+    border: 1px solid #222222;
+    border-radius: 8px;
+    color: #776e65;
+    font-size: 2em;
+    font-weight: 800;
+    padding: 0px 10px;
+    text-align: center;
+    width: auto;
+}
+
+.button:active {
+    background: #d8d6cd;
 }
 
 #score {
-	font-weight: 700;
-	margin-bottom: 30px;
-	text-align: center;
+    font-weight: 700;
+    margin-bottom: 30px;
+    text-align: center;
 }
 
 #field {
-	position: relative;
-	display: flex;
-	justify-content: center;
-	align-content: center;
-	flex-wrap: wrap;
-	width: 840px;
-	height: 840px;
-	background: #bbada0;
-	margin: 0 auto;
-	border-radius: 6px;
-}
-
-#game-container {
-	position: absolute;
-	color: #fff;
-	width: 840px;
-	height: 840px;
-	border-radius: 6px;
-	text-align: center;
-	line-height: 480px;
-	font-size: 4.5em;
-	user-select: none;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
+    width: 420px;
+    height: 420px;
+    background: #bbada0;
+    margin: 0 auto;
+    border-radius: 6px;
 }
 
 .c {
-	padding: 5px;
-	border-radius: 10px;
-	font-size: 1em;
-	background: rgba(238, 228, 218, 0.35);
-	border: solid 5px #bbada0;
-	text-align: center;
-	color: rgb(121, 121, 121);
-	user-select: none;
+    padding: 5px;
+    border-radius: 10px;
+    font-size: 1em;
+    background: rgba(238, 228, 218, 0.35);
+    border: solid 5px #bbada0;
+    text-align: center;
+    color: rgb(121, 121, 121);
+    user-select: none;
 }
-
-._8,
-._16,
-._32,
-._64,
-._128,
-._256,
-._512,
-._1024,
-._2048 {
-	color: #fff !important;
-}
-
-._2 {background: #eee4da;}
-._4 {background: #ede0c8;}
-._8 {background: #f2b179;}
-._16 {background: #f59563;}
-._32 {background: #f67c5f;}
-._64 {background: #f65e3b;}
-._128 {background: #edcf72;}
-._256 {background: #edcc61;}
-._512 {background: #e0bd4b;}
-._1024 {background: #edc53f;}
-._2048 {background: #edc22e;}
