@@ -1,4 +1,5 @@
-let SIZE = document.getElementById("game-size").valueAsNumber;
+let HEIGHT = document.getElementById("game-height").valueAsNumber;
+let WIDTH = document.getElementById("game-width").valueAsNumber;
 let FIELD = [];
 let ACTIVES = [];
 const VIRIDIS_DATA = [
@@ -101,31 +102,29 @@ const VIRIDIS_DATA = [
     [0.9176470588235294, 0.8980392156862745, 0.10196078431372549],
     [0.9450980392156862, 0.8980392156862745, 0.11372549019607843],
     [0.9686274509803922, 0.9019607843137255, 0.12549019607843137],
-    [0.9921568627450981, 0.9058823529411765, 0.1450980392156863]
+    [0.9921568627450981, 0.9058823529411765, 0.1450980392156863],
 ];
 
 function initiateField() {
     FIELD = [];
-    FIELD = new Array(SIZE);
-    for (let i = 0; i < SIZE; ++i) {
-        FIELD[i] = new Array(SIZE)
-        for (let j = 0; j < SIZE; ++j) {
-            FIELD[i][j] = [false, 0.0];
-        }
-    }
     ACTIVES = [];
-    for (let i = 1; i < SIZE - 1; ++i) {
-        for (let j = 1; j < SIZE - 1; ++j) {
-            FIELD[i][j][0] = true;
-            FIELD[i][j][1] = 1.0;
-            ACTIVES.push([i, j]);
+    FIELD = new Array(HEIGHT);
+    for (let i = 0; i < HEIGHT; ++i) {
+        FIELD[i] = new Array(WIDTH);
+        for (let j = 0; j < WIDTH; ++j) {
+            if (i == 0 || i == HEIGHT - 1 || j == 0 || j == WIDTH - 1) {
+                FIELD[i][j] = [false, 0.0];
+            } else {
+                FIELD[i][j] = [true, 1.0];
+                ACTIVES.push([i, j]);
+            }
         }
     }
 }
 
 function rebootField() {
-    for (let i = 0; i < SIZE; ++i) {
-        for (let j = 0; j < SIZE; ++j) {
+    for (let i = 0; i < HEIGHT; ++i) {
+        for (let j = 0; j < WIDTH; ++j) {
             FIELD[i][j][1] = 0.0;
         }
     }
@@ -136,18 +135,23 @@ function rebootField() {
 }
 
 function clearCells() {
-    for (let i = 0; i < SIZE; ++i)
-        for (let j = 0; j < SIZE; ++j)
+    for (let i = 0; i < HEIGHT; ++i)
+        for (let j = 0; j < WIDTH; ++j)
             document.getElementById(`${i},${j}`).remove();
 }
 
 function updateCell(x, y) {
-    const val = FIELD[x][y][1] / 4.0
+    let count = 0;
+    if (x != 0) ++count;
+    if (x != HEIGHT - 1) ++count;
+    if (y != 0) ++count;
+    if (y != WIDTH - 1) ++count;
+    const val = FIELD[x][y][1] / count;
     FIELD[x][y][1] = 0.0;
-    FIELD[x - 1][y][1] += val;
-    FIELD[x + 1][y][1] += val;
-    FIELD[x][y - 1][1] += val;
-    FIELD[x][y + 1][1] += val;
+    if (x != 0) FIELD[x - 1][y][1] += val;
+    if (x != HEIGHT - 1) FIELD[x + 1][y][1] += val;
+    if (y != 0) FIELD[x][y - 1][1] += val;
+    if (y != WIDTH - 1) FIELD[x][y + 1][1] += val;
 }
 
 function arraysEqual(a, b) {
@@ -161,32 +165,35 @@ function arraysEqual(a, b) {
 }
 
 function onclickCell(click) {
-    const idx = click
-        .target
-        .id
-        .split(',')
-        .map(Number);
-    if (click.ctrlKey) {
-        FIELD[idx[0]][idx[1]][0] = false;
-        FIELD[idx[0]][idx[1]][1] = 0.0;
-        const i = ACTIVES.findIndex((element) => {
-            return element[0] == idx[0] && element[1] == idx[1];
-        });
-        ACTIVES.splice(i, 1);
+    const idx = click.target.id.split(",").map(Number);
+    if (click.ctrlKey || click.metaKey) {
+        if (!FIELD[idx[0]][idx[1]][0]) {
+            FIELD[idx[0]][idx[1]][0] = true;
+            FIELD[idx[0]][idx[1]][1] = 1.0;
+            ACTIVES.push(idx);
+        }
+    } else if (click.shiftKey) {
+        if (FIELD[idx[0]][idx[1]][0]) {
+            FIELD[idx[0]][idx[1]][0] = false;
+            FIELD[idx[0]][idx[1]][1] = 0.0;
+            const i = ACTIVES.findIndex((element) => {
+                return element[0] == idx[0] && element[1] == idx[1];
+            });
+            ACTIVES.splice(i, 1);
+        }
     } else {
         if (FIELD[idx[0]][idx[1]][0]) {
             updateCell(idx[0], idx[1]);
         }
     }
-    drawCells();
+    drawCells(false);
 }
 
 function randomCells(i, elem) {
     if (i == 0) {
         elem.textContent = "Terminó";
-        setTimeout(() =>
-            elem.textContent = "Aleatorio"
-            , 1500);
+        drawCells(true);
+        setTimeout(() => (elem.textContent = "Aleatorio"), 1500);
         return;
     }
     elem.textContent = `Espera: ${i}`;
@@ -196,31 +203,32 @@ function randomCells(i, elem) {
     updateCell(x, y);
     setTimeout(() => {
         drawCells();
-        randomCells(i - 1, elem)
+        randomCells(i - 1, elem);
     }, (1000 / (i + 2)) | 0);
 }
 
 function initiateCells() {
     const field = document.getElementById("field");
-    for (let i = 0; i < SIZE; ++i) {
-        for (let j = 0; j < SIZE; ++j) {
+    for (let i = 0; i < HEIGHT; ++i) {
+        for (let j = 0; j < WIDTH; ++j) {
             const cell = document.createElement("div");
             cell.className = "c";
             cell.textContent = FIELD[i][j][1];
             cell.addEventListener("click", onclickCell);
             cell.id = `${i},${j}`;
-            i * SIZE + j + 1;
             field.appendChild(cell);
         }
     }
+    field.style.height = `${60 * HEIGHT}px`;
+    field.style.width = `${60 * WIDTH}px`;
     // Insert style for class .c into css rules
-    STYLE = document.createElement("style");
-    document.head.appendChild(STYLE);
-    STYLE.sheet.insertRule(
+    const style = document.createElement("style");
+    document.head.appendChild(style);
+    style.sheet.insertRule(
         `.c {
-			width: calc(420px / ${SIZE} - 20px);
-			height: calc(420px / ${SIZE} - 20px);
-			line-height: calc(420px / ${SIZE} - 20px);
+			width: 40px;
+			height: 40px;
+			line-height: 40px;
 		}`
     );
 }
@@ -232,7 +240,7 @@ function viridis(c) {
         return [
             Math.floor(rgb[0] * 255),
             Math.floor(rgb[1] * 255),
-            Math.floor(rgb[2] * 255)
+            Math.floor(rgb[2] * 255),
         ];
     }
     if (idx < 0) {
@@ -240,7 +248,7 @@ function viridis(c) {
         return [
             Math.floor(rgb[0] * 255),
             Math.floor(rgb[1] * 255),
-            Math.floor(rgb[2] * 255)
+            Math.floor(rgb[2] * 255),
         ];
     }
     const rgb1 = VIRIDIS_DATA[Math.floor(idx)];
@@ -253,27 +261,38 @@ function viridis(c) {
 }
 
 function format(f) {
-    if (f < 1e-2)
-        return 0;
+    if (f < 1e-4) return 0;
     const str = String(f);
-    const idx = str.indexOf('.');
-    return str.slice(0, idx + 3);
+    const idx = str.indexOf(".");
+    return str.slice(0, idx + 5);
 }
 
-function drawCells() {
-    for (let i = 0; i < SIZE; ++i) {
-        for (let j = 0; j < SIZE; ++j) {
+function drawCells(normalized = false) {
+    let max = 0.0;
+    if (normalized) {
+        max = 1.0;
+        for (let i = 0; i < HEIGHT; ++i) {
+            for (let j = 0; j < WIDTH; ++j) {
+                if (max < FIELD[i][j][1]) {
+                    max = FIELD[i][j][1];
+                }
+            }
+        }
+    }
+    for (let i = 0; i < HEIGHT; ++i) {
+        for (let j = 0; j < WIDTH; ++j) {
             const id = `${i},${j}`;
             const cell = document.getElementById(id);
             cell.textContent = format(FIELD[i][j][1]);
-            const rgb = viridis(FIELD[i][j][1]);
+            const rgb = normalized
+                ? viridis(FIELD[i][j][1] / max)
+                : viridis(FIELD[i][j][1]);
             const rgbl = viridis(1.0 - FIELD[i][j][1]);
-            const alpha = FIELD[i][j][0] ? 0.90 : 0.5;
+            const alpha = FIELD[i][j][0] ? 0.9 : 0.5;
             cell.style.background = `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${alpha})`;
-            if (Math.abs(1.0 - 2 * FIELD[i][j][1]) < 0.2)
+            if (Math.abs(1.0 - (2 * FIELD[i][j][1]) / max) < 0.2)
                 cell.style.color = `rgb(230, 230, 0)`;
-            else
-                cell.style.color = `rgb(${rgbl[0]}, ${rgbl[1]}, ${rgbl[2]})`;
+            else cell.style.color = `rgb(${rgbl[0]}, ${rgbl[1]}, ${rgbl[2]})`;
         }
     }
 }
@@ -281,7 +300,8 @@ function drawCells() {
 // trigger on change
 function resizeField() {
     clearCells();
-    SIZE = document.getElementById("game-size").valueAsNumber;
+    HEIGHT = document.getElementById("game-height").valueAsNumber;
+    WIDTH = document.getElementById("game-width").valueAsNumber;
     initiateField();
     initiateCells();
     drawCells();
@@ -291,8 +311,10 @@ function init() {
     initiateField();
     initiateCells();
     drawCells();
-    const range = document.getElementById("game-size");
-    range.addEventListener("click", resizeField);
+    const height = document.getElementById("game-height");
+    height.addEventListener("click", resizeField);
+    const width = document.getElementById("game-width");
+    width.addEventListener("click", resizeField);
     const reset = document.getElementById("reset");
     reset.addEventListener("click", () => {
         initiateField();

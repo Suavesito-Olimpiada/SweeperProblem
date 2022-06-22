@@ -13,8 +13,10 @@
         <p id="game-title">Problema del Barrendero</p>
         <div>
             <div id="size-bar">
-                <input type="range" id="game-size" min="4" max="8"></input>
-                <label for="game-size">Tamaño</label>
+                <input type="range" id="game-height" min="2" max="10"></input>
+                <label for="game-height">Alto</label>
+                <input type="range" id="game-width" min="2" max="10"></input>
+                <label for="game-width">Ancho</label>
             </div>
             <div id="reset-button">
                 <button id="reset" class="button" type="button">Borrar</button>
@@ -30,8 +32,10 @@
             <!-- JS will automatically insert nodes -->
         </div>
         <div id="instructions">
-            <p>Sosteniendo la tecla Control y haciendo click en los cuadros de
-                pueden desactivar.</p>
+            <p>Sosteniendo la tecla <b><code>Shift</code></b> y haciendo click, se
+                puede desactivar los cuadros.</p>
+            <p>Sosteniendo la tecla <b><code>Control | Command</code></b> y haciendo click, se
+                puede activar los cuadros.</p>
         </div>
     </div>
 

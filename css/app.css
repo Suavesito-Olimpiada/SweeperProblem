@@ -28,21 +28,25 @@ body {
     font-size: 2em;
     text-align: center;
     font-weight: 800;
+    padding: 5px;
 }
 
 #reset-button {
     text-align: center;
     font-weight: 800;
+    padding: 5px;
 }
 
 #reboot-button {
     text-align: center;
     font-weight: 800;
+    padding: 5px;
 }
 
 #random-click {
     text-align: center;
     font-weight: 800;
+    padding: 5px;
 }
 
 .button {
@@ -61,23 +65,16 @@ body {
     background: #d8d6cd;
 }
 
-#score {
-    font-weight: 700;
-    margin-bottom: 30px;
-    text-align: center;
-}
-
 #field {
     position: relative;
     display: flex;
     justify-content: center;
     align-content: center;
     flex-wrap: wrap;
-    width: 420px;
-    height: 420px;
     background: #bbada0;
     margin: 0 auto;
     border-radius: 6px;
+    padding: 5px;
 }
 
 .c {
@@ -94,4 +91,5 @@ body {
 #instructions {
     text-align: center;
     font-weight: 800;
+    padding: 5px;
 }
